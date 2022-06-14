@@ -1,12 +1,28 @@
-import React from 'react'
+import React, { useState , useEffect } from 'react'
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 import '@splidejs/react-splide/css';
 
-import thumb1 from '../images/Thumbnails.png';
-import thumb2 from '../images/Thumbnails2.png';
-import thumb3 from '../images/Thumbnails3.png';
-
 function Exclusive() {
+
+   const API_KEY = process.env.REACT_APP_MY_API_KEY;
+   const API_URL = 'https://api.themoviedb.org/3/';
+
+   const [movie, setMovie] = useState([])
+
+   useEffect(() => {
+      getElements()
+   },[])
+
+   const getElements = async () => {
+      const api = await fetch(
+         `${API_URL}trending/movie/day?api_key=${API_KEY}`
+      )
+      const data = await api.json()
+   
+      setMovie(data.results)
+
+      console.log(data.results)
+   }
    return (
       <section className="exclusive">
 
@@ -21,52 +37,26 @@ function Exclusive() {
             className='splide'
             
             options={{
-               rewind: true,
-               perPage: 2.5,
-               drag: 'free',
-               pagination: false,
-               perMove: 1,
+               perPage:1,
             }}
 
             aria-label="React Splide Example"
          >
-
-            <SplideSlide className='video__slide'>
+         {movie.map((response) => {
+            return (
+               <SplideSlide className='video__slide' key={response.id}>
                   <a href="https://www.youtube.com/" target="_blank" rel="noreferrer" className='video__slide--card'>
                      <div className="video__slide--img">
-                        <img src={thumb1} alt="Image1"/>
+                        <img src={`https://image.tmdb.org/t/p/original//${response.backdrop_path}`} alt="Image1"/>
                      </div>
                      <div className='video__slide--title'>
-                        <p>The Suicide Squad : John Cena Interview</p>
+                        <p>{response.title}</p>
                      </div>
 
                   </a>
-            </SplideSlide>
-
-            <SplideSlide className='video__slide'>
-                  <div className='video__slide--card'>
-                     <div className="video__slide--img">
-                        <img src={thumb2} alt="Image1"/>
-                     </div>
-                     <div className='video__slide--title'>
-                        <p>The Suicide Squad : John Cena Interview</p>
-                     </div>
-
-                  </div>
-            </SplideSlide>
-
-            <SplideSlide className='video__slide'>
-                  <div className='video__slide--card'>
-                     <div className="video__slide--img">
-                        <img src={thumb3} alt="Image1"/>
-                     </div>
-                     <div className='video__slide--title'>
-                        <p>The Suicide Squad : John Cena Interview</p>
-                     </div>
-
-                  </div>
-            </SplideSlide>
-
+               </SplideSlide>
+            );
+         })}
          </Splide>
          
       </section>

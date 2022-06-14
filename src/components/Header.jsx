@@ -1,6 +1,5 @@
 import React , {useState, useEffect} from 'react'
 
-import Poster from '../images/Poster.png'
 import Imdb from '../images/imdb__logo.svg'
 import PlayBtn from '../images/playBtn.svg'
 import RottenTomato from '../images/rottenTomato.svg'
@@ -12,7 +11,6 @@ function Header() {
 
    const [movie, setMovie] = useState([])
 
-   const POSTER_URL = `https://image.tmdb.org/t/p/original//uVBEwjzXweHWjCFjAs7eJzH9in6.jpg${movie.poster_path}`
    const BACKDROP_URL = `https://image.tmdb.org/t/p/original//${movie.backdrop_path}`
 
    const TRAILER_URL = `https://www.google.com/search?q=${movie.title}`
@@ -23,7 +21,7 @@ function Header() {
 
    const getElements = async () => {
       const api = await fetch(
-         `${API_URL}movie/111?api_key=${API_KEY}`
+         `${API_URL}movie/${Math.floor(Math.random() * 560)}?api_key=${API_KEY}`
       )
       const data = await api.json()
    
